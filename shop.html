@@ -13,22 +13,41 @@
 
 <!-- ── PAGE HERO ──────────────────────────────── -->
 <section class="page-hero">
-  <div class="page-hero-deco left">
-    <img src="assets/uploads/2023/08/index-6-1.jpg" alt="" style="height:130px;border-radius:8px;" onerror="this.style.display='none'"/>
+  <!-- Decorative Elements -->
+  <div class="deco-sun-clouds" aria-hidden="true">
+    <!-- Sun and clouds placeholder/SVG will be in CSS or inline -->
+    <svg width="150" height="100" viewBox="0 0 150 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="25" fill="#FFE082" fill-opacity="0.6"/>
+      <path d="M70 60C70 51.7157 76.7157 45 85 45C93.2843 45 100 51.7157 100 60C100 60.3358 99.989 60.669 99.9674 61C104.538 61.5457 108 65.367 108 70C108 74.9706 103.971 79 99 79H71C66.0294 79 62 74.9706 62 70C62 65.0294 66.0294 61 71 61C70.3541 61 69.7214 60.9317 69.1121 60.8021C69.6578 60.3168 70 59.6953 70 59V60Z" fill="#E3F2FD" fill-opacity="0.8"/>
+    </svg>
   </div>
-  <div class="page-hero-deco right">
-    <img src="assets/uploads/2023/10/banner-1.jpg" alt="" style="height:140px;border-radius:8px;" onerror="this.style.display='none'"/>
+  <div class="deco-dash-lines" aria-hidden="true">
+    <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 20Q40 10 70 30T110 20" stroke="#FFCDD2" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M20 50Q50 40 80 60T120 50" stroke="#C8E6C9" stroke-width="2" stroke-dasharray="4 4"/>
+    </svg>
   </div>
-  <div class="page-hero-deco-dash"></div>
+  <div class="deco-flowers" aria-hidden="true">
+    <!-- Image removed -->
+  </div>
+
   <div class="page-hero-center">
     <h1>Shop</h1>
     <nav class="breadcrumb">
-      <a href="index.html">Home</a><span>›</span><span>Shop</span>
+      <a href="index.html">Home</a><span class="sep">></span><span>Shop</span>
     </nav>
   </div>
   <!-- ── CATEGORY MINI SLIDER (IN HERO) ───────────– -->
-  <div class="cat-mini-slider-hero" id="cat-mini-slider">
-    <div class="cat-mini-track" id="cat-mini-track"></div>
+  <div class="cat-mini-slider-hero">
+    <button class="slider-arrow prev" onclick="moveSlider(-1)" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="cat-mini-viewport">
+      <div class="cat-mini-track" id="cat-mini-track"></div>
+    </div>
+    <button class="slider-arrow next" onclick="moveSlider(1)" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
 </section>
 

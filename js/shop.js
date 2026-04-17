@@ -11,26 +11,80 @@ let shopState = {
 const PER_PAGE = 9;
 
 // ── CATEGORY MINI SLIDER ──────────────────────
+let currentSliderIndex = 0;
+const visibleItems = 4;
+let isTransitioning = false;
+
 function buildCatMiniSlider() {
   const track = document.getElementById('cat-mini-track');
   const items = [{ name:'All', img:'assets/uploads/2023/08/index-1-1.jpg', slug:'' }, ...RAPPOD.categories];
-  track.innerHTML = items.map(c => `
-    <div class="cat-mini-item${c.slug===''?' active':''}" onclick="setCat('${c.slug}',this)">
-      <img src="${c.img || 'assets/uploads/2023/11/Notebook.png.jpg'}" class="cat-mini-img" alt="${c.name}" onerror="this.src='assets/uploads/2023/11/Notebook.png.jpg'"/>
+  
+  // Clone items for infinite loop
+  const firstClones = items.slice(0, visibleItems);
+  const lastClones = items.slice(-visibleItems);
+  const totalItems = [...lastClones, ...items, ...firstClones];
+  
+  track.style.width = `${(totalItems.length / visibleItems) * 100}%`;
+  currentSliderIndex = visibleItems;
+
+  track.innerHTML = totalItems.map((c, idx) => {
+    const isOriginal = idx >= visibleItems && idx < (totalItems.length - visibleItems);
+    const activeClass = (isOriginal && c.slug === shopState.cat) ? ' active' : '';
+    return `
+    <div class="cat-mini-item${activeClass}" onclick="setCat('${c.slug}',this)" style="width: ${100 / totalItems.length}%">
+      <div class="cat-mini-img-wrap">
+        <img src="${c.img || 'assets/uploads/2023/11/Notebook.png.jpg'}" class="cat-mini-img" alt="${c.name}" onerror="this.src='assets/uploads/2023/11/Notebook.png.jpg'"/>
+      </div>
       <span class="cat-mini-label">${c.name}</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+
+  // Set initial position
+  const moveX = (100 / totalItems.length) * currentSliderIndex;
+  track.style.transition = 'none';
+  track.style.transform = `translateX(-${moveX}%)`;
+
+  track.addEventListener('transitionend', () => {
+    isTransitioning = false;
+    const realItemsCount = items.length;
+    if (currentSliderIndex >= realItemsCount + visibleItems) {
+      track.style.transition = 'none';
+      currentSliderIndex = visibleItems;
+      const jumpX = (100 / totalItems.length) * currentSliderIndex;
+      track.style.transform = `translateX(-${jumpX}%)`;
+    }
+    if (currentSliderIndex < visibleItems) {
+      track.style.transition = 'none';
+      currentSliderIndex = realItemsCount + visibleItems - 1;
+      const jumpX = (100 / totalItems.length) * currentSliderIndex;
+      track.style.transform = `translateX(-${jumpX}%)`;
+    }
+  });
 }
 
-function scrollCatSlider(dir) {
+function moveSlider(dir) {
+  if (isTransitioning) return;
   const track = document.getElementById('cat-mini-track');
-  track.scrollLeft += dir * 200;
+  const totalElements = track.querySelectorAll('.cat-mini-item').length;
+  
+  isTransitioning = true;
+  currentSliderIndex += dir;
+  
+  track.style.transition = 'transform 0.5s ease-in-out';
+  const moveX = (100 / totalElements) * currentSliderIndex;
+  track.style.transform = `translateX(-${moveX}%)`;
 }
 
 function setCat(slug, el) {
   shopState.cat = slug;
   shopState.page = 1;
-  document.querySelectorAll('.cat-mini-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll('.cat-mini-item').forEach(i => {
+    // Sync active state across all instances (original and clones)
+    // We can use a simplified approach: just re-render or find by label/slug
+    const label = i.querySelector('.cat-mini-label').textContent;
+    const targetLabel = el.querySelector('.cat-mini-label').textContent;
+    i.classList.toggle('active', label === targetLabel);
+  });
   document.querySelectorAll('.sidebar-cats li').forEach(li => {
     li.classList.toggle('active', li.dataset.slug === slug);
   });
