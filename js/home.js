@@ -54,9 +54,19 @@ function startHeroAuto() {
 
 // ── FEATURES ─────────────────────────────────
 function buildFeatures() {
+  const icons = {
+    'Free Shipping': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm14 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M2 17h2m10 0h4m2 0h2"/><path d="m5 14-.6-3H3m11 3-.6-3H8.5m10 3 .6-3H21"/><path d="M13 5H1m0 9h12V5ZM23 14h-5V8h3l2 3v3Z"/><path d="M11 7h-2"/><path d="M7 7H5"/><path d="M3 7H1"/></svg>`,
+    'Refund Policy': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+    'Secure Payment': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>`,
+    'Discount Coupons': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L14.7 21a2.4 2.4 0 0 1-3.4 0L5 14.7V5h10Z"/><path d="M9 9h.01"/><path d="m15 15-5-5"/></svg>`,
+    'Privacy Protection': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`
+  };
+
   document.getElementById('features-grid').innerHTML = RAPPOD.features.map(f => `
     <div class="feature-item">
-      <div class="feature-icon">${f.icon}</div>
+      <div class="feature-icon-wrapper">
+        ${icons[f.title] || f.icon}
+      </div>
       <div class="feature-text">
         <strong>${f.title}</strong>
         <span>${f.sub}</span>
