@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cart – Rappod</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<style>
+/* cart.css */
+.cart-page { max-width: 1280px; margin: 0 auto; padding: 40px 40px 80px; }
+
+/* Step indicator */
+.cart-steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 40px;
+}
+.cart-step {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; position: relative; padding: 0 30px;
+}
+.cart-step::after {
+  content: ''; position: absolute; top: 18px; left: calc(50% + 22px);
+  width: calc(100% - 44px); height: 1px; background: var(--border-med);
+}
+.cart-step:last-child::after { display: none; }
+.step-circle {
+  width: 40px; height: 40px; border-radius: 30px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13.5px; font-weight: 700; border: 2px solid var(--border-med);
+  background: #fff; color: var(--text-light); transition: all .2s; white-space: nowrap;
+  padding: 0 16px; min-width: 80px;
+}
+.cart-step.active .step-circle { background: var(--accent); border-color: var(--accent); color: #fff; }
+.step-label { font-size: 12px; color: var(--text-light); }
+.cart-step.active .step-label { color: var(--accent); font-weight: 600; }
+
+/* Shipping bar */
+.shipping-bar-wrap {
+  border: 1.5px dashed var(--border-med); border-radius: 10px;
+  padding: 18px 24px; margin-bottom: 28px; background: #fff;
+}
+.shipping-bar-msg { font-size: 13.5px; color: #555; margin-bottom: 10px; }
+.shipping-bar-msg strong { color: #222; }
+.shipping-bar-msg b { color: var(--accent); }
+.shipping-bar-track { background: #f0f0f0; border-radius: 30px; height: 6px; overflow: hidden; }
+.shipping-bar-fill { height: 100%; background: var(--accent); border-radius: 30px; transition: width .5s ease; }
+
+/* Cart table */
+.cart-table-wrap { border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px; }
+.cart-table-header {
+  display: grid; grid-template-columns: 2fr 1fr 1.2fr 1fr 40px;
+  gap: 16px; padding: 14px 24px;
+  background: #fafafa; border-bottom: 1.5px solid var(--border);
+  font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .4px; color: #666;
+}
+.cart-table-row {
+  display: grid; grid-template-columns: 2fr 1fr 1.2fr 1fr 40px;
+  gap: 16px; padding: 20px 24px;
+  border-bottom: 1px solid var(--border); align-items: center;
+}
+.cart-table-row:last-child { border-bottom: none; }
+.cart-product-cell { display: flex; align-items: center; gap: 16px; }
+.cart-product-img { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+.cart-product-name { font-size: 14px; font-weight: 600; color: #222; }
+.cart-product-name a:hover { color: var(--accent); }
+.cart-price { font-size: 14px; color: var(--accent); font-weight: 700; }
+.cart-subtotal { font-size: 14px; color: var(--accent); font-weight: 700; }
+.cart-remove {
+  background: none; border: none; color: #ccc; cursor: pointer;
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; transition: all .2s;
+}
+.cart-remove:hover { background: #fee; color: #e74c3c; }
+.cart-remove svg { width: 16px; height: 16px; }
+
+/* Cart footer row */
+.cart-actions {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; margin-bottom: 0;
+}
+.coupon-wrap { display: flex; gap: 0; flex: 1; max-width: 420px; }
+.coupon-input {
+  flex: 1; padding: 11px 18px;
+  border: 1.5px solid var(--border-med); border-right: none;
+  border-radius: 30px 0 0 30px; font-size: 13.5px; outline: none;
+  color: #888;
+}
+.coupon-input:focus { border-color: var(--accent); }
+.coupon-btn {
+  padding: 11px 24px; background: var(--accent); color: #fff;
+  border: none; border-radius: 0 30px 30px 0; font-size: 13.5px;
+  font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap;
+}
+.coupon-btn:hover { background: var(--accent-dark); }
+.continue-btn {
+  padding: 11px 28px; background: var(--accent); color: #fff;
+  border: none; border-radius: 30px; font-size: 13.5px;
+  font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap;
+}
+.continue-btn:hover { background: var(--accent-dark); }
+.coupon-msg { font-size: 12.5px; margin-top: 8px; min-height: 18px; }
+.coupon-msg.success { color: #27ae60; }
+.coupon-msg.error   { color: #e74c3c; }
+
+/* Cart layout */
+.cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
+.cart-left {}
+
+/* Cart totals */
+.cart-totals {
+  background: #fafafa; border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 28px; position: sticky; top: 90px;
+}
+.cart-totals h3 {
+  font-size: 1rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .5px; margin-bottom: 22px;
+  padding-bottom: 12px; border-bottom: 2px solid var(--border);
+}
+.totals-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.totals-row:last-of-type { border-bottom: none; }
+.totals-label { color: #666; font-weight: 500; }
+.totals-value { font-weight: 700; color: #222; text-align: right; }
+.totals-total .totals-label { font-weight: 800; font-size: 15px; color: #222; }
+.totals-total .totals-value { font-size: 1.2rem; color: #222; }
+.shipping-options { font-size: 13px; color: #555; }
+.shipping-option { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.shipping-option input { accent-color: var(--accent); }
+.shipping-addr { font-size: 12.5px; color: #555; margin-top: 8px; }
+.shipping-addr a { color: var(--accent); text-decoration: underline; cursor: pointer; }
+.checkout-btn {
+  width: 100%; padding: 15px; background: var(--accent); color: #fff;
+  border: none; border-radius: 30px; font-size: 15px; font-weight: 800;
+  cursor: pointer; margin-top: 20px; transition: all .2s; letter-spacing: .3px;
+}
+.checkout-btn:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,115,90,.35); }
+
+.cart-empty {
+  text-align: center; padding: 60px 20px; color: var(--text-light);
+  border: 1.5px solid var(--border); border-radius: 10px;
+}
+.cart-empty svg { width: 56px; height: 56px; color: #ddd; display: block; margin: 0 auto 18px; }
+.cart-empty h3 { font-size: 1.1rem; color: #555; margin-bottom: 8px; }
+
+@media(max-width:900px){
+  .cart-page{padding:24px 16px 60px;}
+  .cart-layout{grid-template-columns:1fr;}
+  .cart-table-header{display:none;}
+  .cart-table-row{grid-template-columns:72px 1fr 40px;grid-template-rows:auto auto;}
+  .cart-table-row > *:nth-child(3){grid-column:2;grid-row:2;}
+  .cart-table-row > *:nth-child(4){display:none;}
+  .cart-totals{position:static;}
+  .coupon-wrap{max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div id="header-root"></div>
+
+<div class="cart-page">
+
+  <!-- Step Indicator -->
+  <div class="cart-steps">
+    <div class="cart-step active">
+      <div class="step-circle">Cart</div>
+    </div>
+    <div class="cart-step">
+      <div class="step-circle">Checkout</div>
+    </div>
+    <div class="cart-step">
+      <div class="step-circle">Order Tracking</div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="cart-layout" id="cart-layout">
+    <!-- Populated by JS -->
+  </div>
+
+</div>
+
+<div id="footer-root"></div>
+<button id="scroll-top-btn" class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="data/mock.js"></script>
+<script src="js/shared.js"></script>
+<script>
+document.getElementById('header-root').innerHTML = buildHeader('');
+document.getElementById('footer-root').innerHTML = buildFooter();
+
+const FREE_SHIPPING_THRESHOLD = 500;
+const COUPONS = { 'RAPPOD10': 10, 'SAVE20': 20, 'STATIONERY15': 15 };
+let appliedDiscount = 0;
+let appliedCoupon   = '';
+
+function getSubtotal() {
+  return RAPPOD.getCart().reduce((s,i) => s + i.price * i.qty, 0);
+}
+
+function renderCart() {
+  const cart      = RAPPOD.getCart();
+  const subtotal  = getSubtotal();
+  const discAmt   = appliedDiscount ? (subtotal * appliedDiscount / 100) : 0;
+  const shipping  = (subtotal - discAmt) >= FREE_SHIPPING_THRESHOLD ? 0 : 8.99;
+  const total     = subtotal - discAmt + shipping;
+  const pct       = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+
+  if (!cart.length) {
+    document.getElementById('cart-layout').innerHTML = `
+      <div style="grid-column:1/-1;">
+        <div class="cart-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <h3>Your cart is empty</h3>
+          <p>Add some products to your cart to proceed.</p>
+          <a href="shop.html" class="btn-primary" style="margin-top:20px;display:inline-block;">Continue Shopping</a>
+        </div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('cart-layout').innerHTML = `
+    <!-- LEFT -->
+    <div class="cart-left">
+      <!-- Shipping bar -->
+      <div class="shipping-bar-wrap">
+        <div class="shipping-bar-msg">
+          ${remaining > 0
+            ? `Spend <b>$${remaining.toFixed(2)}</b> more and get <strong>free shipping!</strong>`
+            : `🎉 You've unlocked <strong>free shipping!</strong>`}
+        </div>
+        <div class="shipping-bar-track">
+          <div class="shipping-bar-fill" style="width:${pct}%"></div>
+        </div>
+      </div>
+
+      <!-- Cart Table -->
+      <div class="cart-table-wrap">
+        <div class="cart-table-header">
+          <div>Product</div>
+          <div>Price</div>
+          <div>Quantity</div>
+          <div>Subtotal</div>
+          <div></div>
+        </div>
+        ${cart.map(item => `
+          <div class="cart-table-row">
+            <div class="cart-product-cell">
+              <img src="${item.img}" alt="${item.name}" class="cart-product-img" onerror="this.src='assets/uploads/2020/12/candy-color-4-600x743.jpg'"/>
+              <div class="cart-product-name">
+                <a href="product.html?id=${item.id}">${item.name}</a>
+              </div>
+            </div>
+            <div class="cart-price">${item.price.toFixed(2)}$</div>
+            <div>
+              <div class="qty-row" style="margin-bottom:0;">
+                <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+                <input type="number" value="${item.qty}" min="1" class="qty-input"
+                  onchange="setQty(${item.id}, parseInt(this.value)||1)"/>
+                <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+              </div>
+            </div>
+            <div class="cart-subtotal">${(item.price * item.qty).toFixed(2)}$</div>
+            <button class="cart-remove" onclick="removeItem(${item.id})" title="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>`).join('')}
+      </div>
+
+      <!-- Actions -->
+      <div class="cart-actions">
+        <div>
+          <div class="coupon-wrap">
+            <input type="text" class="coupon-input" id="coupon-input" placeholder="Coupon code" value="${appliedCoupon}"/>
+            <button class="coupon-btn" onclick="applyCoupon()">Apply Coupon</button>
+          </div>
+          <div class="coupon-msg" id="coupon-msg"></div>
+        </div>
+        <button class="continue-btn" onclick="window.location='shop.html'">Continue Shopping</button>
+      </div>
+    </div>
+
+    <!-- RIGHT — Totals -->
+    <div class="cart-totals">
+      <h3>Cart Totals</h3>
+      <div class="totals-row">
+        <span class="totals-label">Subtotal</span>
+        <span class="totals-value">${subtotal.toFixed(2)}$</span>
+      </div>
+      ${appliedDiscount ? `
+      <div class="totals-row">
+        <span class="totals-label">Discount (${appliedDiscount}%)</span>
+        <span class="totals-value" style="color:var(--accent);">−${discAmt.toFixed(2)}$</span>
+      </div>` : ''}
+      <div class="totals-row">
+        <span class="totals-label">Shipping</span>
+        <div class="totals-value">
+          <div class="shipping-options">
+            <div class="shipping-option">
+              <input type="radio" name="shipping" id="flat-rate" checked/>
+              <label for="flat-rate">${shipping > 0 ? `Flat rate: $${shipping.toFixed(2)}` : 'Free shipping'}</label>
+            </div>
+          </div>
+          <div class="shipping-addr">
+            Shipping to <strong>Kenya</strong><br/>
+            <a onclick="alert('Address change requires account login.')">Change address</a>
+          </div>
+        </div>
+      </div>
+      <div class="totals-row totals-total">
+        <span class="totals-label">Total</span>
+        <span class="totals-value">${total.toFixed(2)}$</span>
+      </div>
+      <button class="checkout-btn" onclick="handleCheckout()">Proceed To Checkout</button>
+    </div>`;
+}
+
+function changeQty(id, delta) {
+  const cart = RAPPOD.getCart();
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  const newQty = item.qty + delta;
+  if (newQty < 1) { removeItem(id); return; }
+  RAPPOD.updateQty(id, newQty);
+  renderCart();
+}
+
+function setQty(id, qty) {
+  if (qty < 1) { removeItem(id); return; }
+  RAPPOD.updateQty(id, qty);
+  renderCart();
+}
+
+function removeItem(id) {
+  RAPPOD.removeFromCart(id);
+  renderCart();
+}
+
+function applyCoupon() {
+  const code = (document.getElementById('coupon-input').value || '').trim().toUpperCase();
+  const msg  = document.getElementById('coupon-msg');
+  if (COUPONS[code]) {
+    appliedDiscount = COUPONS[code];
+    appliedCoupon   = code;
+    msg.textContent = `✓ Coupon "${code}" applied — ${COUPONS[code]}% off!`;
+    msg.className   = 'coupon-msg success';
+    renderCart();
+  } else {
+    msg.textContent = '✗ Invalid coupon code. Try RAPPOD10 or SAVE20.';
+    msg.className   = 'coupon-msg error';
+  }
+}
+
+function handleCheckout() {
+  alert('Checkout requires a payment backend.\n\nThis is a frontend demo.\n\nWorking coupons: RAPPOD10, SAVE20, STATIONERY15');
+}
+
+document.addEventListener('DOMContentLoaded', renderCart);
+</script>
+</body>
+</html>

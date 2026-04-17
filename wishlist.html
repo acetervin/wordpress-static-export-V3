@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wishlist – Rappod</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<style>
+/* wishlist.css */
+.wishlist-section { padding: 40px 40px 60px; max-width: 1280px; margin: 0 auto; }
+
+.wishlist-table { width: 100%; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 30px; }
+.wishlist-row {
+  display: grid; grid-template-columns: 40px 100px 1fr 1fr;
+  align-items: center; gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.wishlist-row:last-child { border-bottom: none; }
+.wishlist-row:hover { background: #fafafa; }
+
+.wishlist-remove {
+  background: none; border: none; color: #ccc; font-size: 1.1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%; transition: all .2s;
+}
+.wishlist-remove:hover { background: #fee; color: #e74c3c; }
+.wishlist-remove svg { width: 16px; height: 16px; }
+
+.wishlist-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+
+.wishlist-product-name { font-size: 15px; font-weight: 600; color: #222; margin-bottom: 6px; }
+.wishlist-product-name a:hover { color: var(--accent); }
+.wishlist-price { margin-bottom: 4px; }
+.wishlist-price del { color: var(--text-muted); font-size: 13px; margin-right: 6px; }
+.wishlist-price .sale-price { color: var(--accent); font-size: 15px; font-weight: 700; }
+.wishlist-date { font-size: 12px; color: var(--text-muted); }
+
+.wishlist-action { text-align: right; }
+.btn-add-to-cart-wl {
+  display: inline-block; padding: 10px 22px; border-radius: 30px;
+  background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+  border: none; cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.btn-add-to-cart-wl:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-buy-wl {
+  display: inline-block; padding: 10px 22px; border-radius: 30px;
+  background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+  border: none; cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.btn-buy-wl:hover { background: var(--accent-dark); }
+
+.wishlist-empty {
+  text-align: center; padding: 60px 20px; color: var(--text-light);
+}
+.wishlist-empty svg { width: 60px; height: 60px; color: #ddd; margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto; }
+.wishlist-empty h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.wishlist-empty a { margin-top: 16px; display: inline-block; }
+
+.wishlist-footer-row {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px; padding-top: 10px;
+}
+.share-on { display: flex; align-items: center; gap: 12px; }
+.share-on-label { font-size: 13.5px; font-weight: 600; color: #555; }
+.share-on-btns { display: flex; gap: 8px; }
+.share-social-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: transform .2s; border: none;
+}
+.share-social-btn:hover { transform: scale(1.1); }
+.share-social-btn.fb  { background: #1877f2; }
+.share-social-btn.tw  { background: #1da1f2; }
+.share-social-btn.pi  { background: #e60023; }
+.share-social-btn.ig  { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+.share-social-btn svg { width: 15px; height: 15px; }
+
+.wishlist-link-row { display: flex; align-items: center; gap: 10px; }
+.wishlist-link-label { font-size: 13px; font-weight: 600; color: #555; }
+.wishlist-link-input {
+  padding: 10px 16px; border: 1.5px solid var(--border-med); border-radius: 30px 0 0 30px;
+  font-size: 12.5px; color: #888; width: 320px; outline: none; background: #fafafa;
+}
+.wishlist-link-copy {
+  padding: 10px 20px; background: var(--accent); color: #fff; border: none;
+  border-radius: 0 30px 30px 0; font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: background .2s;
+}
+.wishlist-link-copy:hover { background: var(--accent-dark); }
+
+@media(max-width:768px){
+  .wishlist-section{padding:24px 16px;}
+  .wishlist-row{grid-template-columns:32px 72px 1fr;gap:12px;}
+  .wishlist-action{grid-column:1/-1;text-align:left;padding-left:104px;}
+  .wishlist-link-input{width:180px;}
+  .wishlist-footer-row{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div id="header-root"></div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="page-hero-deco left">
+    <img src="assets/uploads/2023/10/banner-5.png" alt="" style="height:160px;" onerror="this.style.display='none'"/>
+  </div>
+  <div class="page-hero-deco right">
+    <img src="assets/uploads/2023/10/banner-7.png" alt="" style="height:160px;" onerror="this.style.display='none'"/>
+  </div>
+  <div class="page-hero-deco-dash"></div>
+  <div class="page-hero-center">
+    <h1>Wishlist</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a><span>›</span><span>Wishlist</span>
+    </nav>
+  </div>
+</section>
+
+<!-- Wishlist Content -->
+<div class="wishlist-section">
+  <div id="wishlist-table-wrap"></div>
+
+  <div class="wishlist-footer-row">
+    <div class="share-on">
+      <span class="share-on-label">Share On:</span>
+      <div class="share-on-btns">
+        <button class="share-social-btn fb"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button>
+        <button class="share-social-btn tw"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></button>
+        <button class="share-social-btn pi" style="background:#e60023;">●</button>
+        <button class="share-social-btn ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></button>
+      </div>
+    </div>
+    <div class="wishlist-link-row">
+      <span class="wishlist-link-label">Wishlist Link:</span>
+      <input type="text" class="wishlist-link-input" id="wishlist-link" value="https://rappod.wpbingosite.com/wishlist/WOOSW" readonly/>
+      <button class="wishlist-link-copy" onclick="copyWishlistLink()">Copy</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<button id="scroll-top-btn" class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="data/mock.js"></script>
+<script src="js/shared.js"></script>
+<script>
+document.getElementById('header-root').innerHTML = buildHeader('');
+document.getElementById('footer-root').innerHTML = buildFooter();
+
+function renderWishlist() {
+  const wl = RAPPOD.getWishlist();
+  const wrap = document.getElementById('wishlist-table-wrap');
+
+  if (!wl.length) {
+    wrap.innerHTML = `<div class="wishlist-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <h3>Your wishlist is empty</h3>
+      <p>Add products you love to your wishlist.</p>
+      <a href="shop.html" class="btn-primary">Browse Products</a>
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `<div class="wishlist-table">
+    ${wl.map(item => {
+      const prod = RAPPOD.products.find(p => p.id === item.id);
+      const isVariable = prod && prod.type === 'variable';
+      return `<div class="wishlist-row">
+        <button class="wishlist-remove" onclick="removeWishlist(${item.id})" title="Remove">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </button>
+        <img src="${item.img}" alt="${item.name}" class="wishlist-img" onerror="this.src='assets/uploads/2020/12/candy-color-4-600x743.jpg'"/>
+        <div>
+          <div class="wishlist-product-name"><a href="product.html?id=${item.id}">${item.name}</a></div>
+          <div class="wishlist-price">
+            ${item.sale ? `<del>${item.price}</del> <span class="sale-price">${item.sale}</span>` : `<span style="color:var(--accent);font-weight:700;">${item.price}</span>`}
+          </div>
+          <div class="wishlist-date">${item.date || 'April 15, 2026'}</div>
+        </div>
+        <div class="wishlist-action">
+          ${isVariable
+            ? `<a href="product.html?id=${item.id}" class="btn-buy-wl">Buy Product</a>`
+            : `<button class="btn-add-to-cart-wl" onclick="addWlToCart(${item.id})">Add To Cart</button>`}
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function removeWishlist(id) {
+  const wl = RAPPOD.getWishlist().filter(i => i.id !== id);
+  RAPPOD.saveWishlist(wl);
+  renderWishlist();
+}
+
+function addWlToCart(id) {
+  const prod = RAPPOD.products.find(p => p.id === id);
+  if (prod) RAPPOD.addToCart(prod, 1);
+}
+
+function copyWishlistLink() {
+  const input = document.getElementById('wishlist-link');
+  navigator.clipboard.writeText(input.value).then(() => {
+    RAPPOD.showToast('Wishlist link copied!');
+  }).catch(() => {
+    input.select(); document.execCommand('copy');
+    RAPPOD.showToast('Wishlist link copied!');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', renderWishlist);
+</script>
+</body>
+</html>

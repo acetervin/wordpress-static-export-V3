@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rappod – Stationery &amp; Gift Store</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<link rel="stylesheet" href="css/home.css"/>
+</head>
+<body>
+
+<div id="header-root"></div>
+
+<!-- ── HERO SLIDER ──────────────────────────── -->
+<section class="hero-slider">
+  <div class="hero-slides" id="hero-slides"></div>
+  <div class="hero-dots" id="hero-dots"></div>
+</section>
+
+<!-- ── FEATURES STRIP ───────────────────────── -->
+<section class="features-strip">
+  <div class="container">
+    <div class="features-grid" id="features-grid"></div>
+  </div>
+</section>
+
+<!-- ── SHOP BY CATEGORIES ───────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header" style="justify-content:center;margin-bottom:36px;">
+      <h2 class="section-title" style="font-size:1.8rem;">Shop By Categories</h2>
+    </div>
+    <div class="categories-mosaic" id="categories-mosaic"></div>
+  </div>
+</section>
+
+<!-- ── DEALS OF THE WEEK ─────────────────────── -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-header">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <h2 class="section-title">Deals Of The Week</h2>
+        <div class="countdown" id="countdown"></div>
+      </div>
+      <a href="shop.html" class="section-link">View all</a>
+    </div>
+    <div class="product-grid grid-5" id="deals-grid"></div>
+  </div>
+</section>
+
+<!-- ── PROMO BANNER ───────────────────────────── -->
+<section class="promo-banner-full">
+  <div class="container">
+    <div class="promo-banner-card">
+      <img src="assets/uploads/2023/08/index-8-1.jpg" alt="Creative Notebook Ideas" class="promo-banner-img"/>
+      <div class="promo-banner-text">
+        <h3>Creative Notebook Ideas</h3>
+        <p>Artistic adventures in notebooks</p>
+        <a href="shop.html" class="btn-primary">Shop Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROMO GRID ─────────────────────────────── -->
+<section class="section" style="padding-top:40px;padding-bottom:40px;">
+  <div class="container">
+    <div class="product-grid grid-3" id="promo-grid"></div>
+  </div>
+</section>
+
+<!-- ── BEST SELLERS ───────────────────────────── -->
+<section class="section" style="padding-top:20px;">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Best Sellers</h2>
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="new-arrival" onclick="switchBestSeller(this,'new-arrival')">New Arrival</button>
+        <button class="tab-btn" data-tab="top-rating" onclick="switchBestSeller(this,'top-rating')">Top Rating</button>
+        <button class="tab-btn" data-tab="best-sellers" onclick="switchBestSeller(this,'best-sellers')">Best Sellers</button>
+        <button class="tab-btn" data-tab="featured" onclick="switchBestSeller(this,'featured')">Featured Products</button>
+        <a href="shop.html" class="section-link" style="margin-left:10px;">View all</a>
+      </div>
+    </div>
+    <div class="product-grid grid-5" id="bestsellers-grid"></div>
+  </div>
+</section>
+
+<!-- ── FEATURED PRODUCT ───────────────────────── -->
+<section class="featured-product-section">
+  <div class="container">
+    <div class="featured-product-grid" id="featured-product"></div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ─────────────────────────────── -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div class="newsletter-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="newsletter-text">
+        <h3>Sign Up To Our Newsletter</h3>
+        <p>Subscribe to receive updates, access to exclusive deals.</p>
+      </div>
+      <div class="newsletter-form" style="flex:1;max-width:420px;">
+        <input type="email" class="newsletter-input" placeholder="Enter your email..."/>
+        <button class="newsletter-btn" onclick="alert('Thank you for subscribing!')">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-root"></div>
+
+<button id="scroll-top-btn" class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="data/mock.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

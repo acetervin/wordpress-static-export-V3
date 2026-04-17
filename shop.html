@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shop – Rappod</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<link rel="stylesheet" href="css/shop.css"/>
+</head>
+<body>
+
+<div id="header-root"></div>
+
+<!-- ── PAGE HERO ──────────────────────────────── -->
+<section class="page-hero">
+  <div class="page-hero-deco left">
+    <img src="assets/uploads/2023/08/index-6-1.jpg" alt="" style="height:130px;border-radius:8px;" onerror="this.style.display='none'"/>
+  </div>
+  <div class="page-hero-deco right">
+    <img src="assets/uploads/2023/10/banner-1.jpg" alt="" style="height:140px;border-radius:8px;" onerror="this.style.display='none'"/>
+  </div>
+  <div class="page-hero-deco-dash"></div>
+  <div class="page-hero-center">
+    <h1>Shop</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a><span>›</span><span>Shop</span>
+    </nav>
+  </div>
+  <!-- ── CATEGORY MINI SLIDER (IN HERO) ───────────– -->
+  <div class="cat-mini-slider-hero" id="cat-mini-slider">
+    <div class="cat-mini-track" id="cat-mini-track"></div>
+  </div>
+</section>
+
+<!-- ── MAIN SHOP LAYOUT ───────────────────────── -->
+<div class="shop-layout container">
+
+  <!-- SIDEBAR -->
+  <aside class="shop-sidebar" id="shop-sidebar"></aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="shop-main">
+    <!-- Toolbar -->
+    <div class="shop-toolbar">
+      <div class="sort-select-wrap">
+        <select id="sort-select" class="sort-select" onchange="applyFilters()">
+          <option value="">Default Sorting</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Name A–Z</option>
+          <option value="rating">Top Rated</option>
+        </select>
+        <svg class="sort-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" onclick="setView('grid5',this)" title="5 columns">
+          <svg viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="3.5" height="18" rx="1"/><rect x="5.8" y="1" width="3.5" height="18" rx="1"/><rect x="10.5" y="1" width="3.5" height="18" rx="1"/><rect x="15.2" y="1" width="3.8" height="18" rx="1"/></svg>
+        </button>
+        <button class="view-btn active2" onclick="setView('grid3',this)" title="3 columns">
+          <svg viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="5.5" height="18" rx="1"/><rect x="7.5" y="1" width="5.5" height="18" rx="1"/><rect x="13.5" y="1" width="5.5" height="18" rx="1"/></svg>
+        </button>
+        <button class="view-btn" onclick="setView('grid2',this)" title="2 columns">
+          <svg viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="8.5" height="18" rx="1"/><rect x="10.5" y="1" width="8.5" height="18" rx="1"/></svg>
+        </button>
+        <button class="view-btn" onclick="setView('list',this)" title="List view">
+          <svg viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="2" width="18" height="4" rx="1"/><rect x="1" y="8" width="18" height="4" rx="1"/><rect x="1" y="14" width="18" height="4" rx="1"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid grid-3" id="shop-grid"></div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="shop-pagination"></div>
+  </main>
+</div>
+
+<div id="footer-root"></div>
+
+<button id="scroll-top-btn" class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="data/mock.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/shop.js"></script>
+</body>
+</html>

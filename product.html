@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Product – Rappod</title>
+<link rel="stylesheet" href="css/shared.css"/>
+<link rel="stylesheet" href="css/product.css"/>
+</head>
+<body>
+
+<div id="header-root"></div>
+
+<!-- Breadcrumb -->
+<div class="product-breadcrumb container">
+  <nav class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <a href="shop.html">Shop</a><span>›</span>
+    <span id="bc-cat">Pencil Pocket</span><span>›</span>
+    <span id="bc-name">Product</span>
+  </nav>
+</div>
+
+<!-- ── PRODUCT DETAIL ─────────────────────────── -->
+<section class="product-detail-section container">
+  <div class="product-gallery" id="product-gallery">
+    <div class="gallery-thumbs" id="gallery-thumbs"></div>
+    <div class="gallery-main">
+      <button class="gallery-arrow gallery-prev" onclick="galleryNav(-1)">‹</button>
+      <img id="gallery-main-img" src="" alt="" class="gallery-main-img"/>
+      <button class="gallery-arrow gallery-next" onclick="galleryNav(1)">›</button>
+    </div>
+  </div>
+
+  <div class="product-info-col" id="product-info-col">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- ── PRODUCT TABS ───────────────────────────── -->
+<section class="product-tabs-section container">
+  <div class="tab-buttons product-tab-btns">
+    <button class="tab-btn active" onclick="switchTab('bundle',this)">Frequently Bought Together</button>
+    <button class="tab-btn" onclick="switchTab('description',this)">Description</button>
+    <button class="tab-btn" onclick="switchTab('reviews',this)">Reviews (0)</button>
+  </div>
+
+  <!-- Bundle Tab -->
+  <div class="tab-pane active" id="tab-bundle">
+    <div class="bundle-section" id="bundle-section"></div>
+  </div>
+
+  <!-- Description Tab -->
+  <div class="tab-pane" id="tab-description">
+    <div class="description-content">
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+    </div>
+  </div>
+
+  <!-- Reviews Tab -->
+  <div class="tab-pane" id="tab-reviews">
+    <div style="text-align:center;padding:40px;color:var(--text-light);">
+      <div style="font-size:3rem;margin-bottom:16px;">★★★★★</div>
+      <p>No reviews yet. Be the first to review this product!</p>
+      <button class="btn-primary" style="margin-top:20px;" onclick="alert('Review submission requires a backend.')">Write a Review</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── RELATED PRODUCTS ───────────────────────── -->
+<section class="section container">
+  <h2 class="section-title" style="text-align:center;margin-bottom:30px;">Related Products</h2>
+  <div class="product-grid grid-4" id="related-grid"></div>
+</section>
+
+<!-- ── RECENTLY VIEWED ────────────────────────── -->
+<section class="section container" style="padding-top:0;">
+  <h2 class="section-title" style="text-align:center;margin-bottom:30px;">Recently Viewed Products</h2>
+  <div class="product-grid grid-4" id="recent-grid"></div>
+</section>
+
+<div id="footer-root"></div>
+
+<button id="scroll-top-btn" class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="data/mock.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/product.js"></script>
+</body>
+</html>
